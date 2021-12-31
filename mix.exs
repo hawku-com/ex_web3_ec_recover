@@ -11,9 +11,9 @@ defmodule ExWeb3EcRecover.MixProject do
     [
 
       files: ["lib", "mix.exs", "README*", "LICENSE*"],
-      maintainers: ["Hawku"],
+      maintainers: ["Hawku, Inc,", "Charlie Graham"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/hawku/exweb3ecrecover"}
+      links: %{"GitHub" => "https://github.com/hawku-com/ex_web3_ec_recover"}
     ]
   end
 
@@ -22,7 +22,7 @@ defmodule ExWeb3EcRecover.MixProject do
 
     
     name: "ExWeb3EcRecover",
-    source_url: "https://github.com/hawku/exweb3ecrecover",
+    source_url: "https://github.com/hawku-com/ex_web3_ec_recover",
     docs: [
       main: "ExWeb3EcRecover", # The main page in the docs
       extras: ["README.md"],
