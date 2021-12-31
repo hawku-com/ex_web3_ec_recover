@@ -6,7 +6,7 @@ defmodule ExWeb3EcRecover.MixProject do
     [
 
     
-    name: "ExWeb3EcRecover",
+    name: "ex_web3_ec_recover",
     source_url: "https://github.com/hawku-com/ex_web3_ec_recover",
     docs: [
       main: "ExWeb3EcRecover", # The main page in the docs
@@ -37,7 +37,7 @@ defmodule ExWeb3EcRecover.MixProject do
   defp package() do
     [
 
-      name: "ExWeb3EcRecover",
+      name: "ex_web3_ec_recover",
       files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Hawku, Inc,", "Charlie Graham"],
       licenses: ["MIT"],
