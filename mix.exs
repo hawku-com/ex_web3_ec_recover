@@ -16,6 +16,8 @@ defmodule ExWeb3EcRecover.MixProject do
     version: "0.1.0",
     elixir: "~> 1.12",
     start_permanent: Mix.env() == :prod,
+    description: description(),
+    package: package(),
     deps: deps()
 
     ]
@@ -28,23 +30,20 @@ defmodule ExWeb3EcRecover.MixProject do
     ]
   end
 
-  defp description do
-    """
-    Library for recovering web3 ETH signatures.
-    """
+  defp description() do
+    "Library for recovering web3 ETH signatures."
   end
 
-  defp package do
+  defp package() do
     [
 
+      name: "ExWeb3EcRecover",
       files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Hawku, Inc,", "Charlie Graham"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/hawku-com/ex_web3_ec_recover"}
     ]
   end
-
-
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
