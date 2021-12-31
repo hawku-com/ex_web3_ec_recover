@@ -1,22 +1,7 @@
 defmodule ExWeb3EcRecover.MixProject do
   use Mix.Project
 
-  def description do
-    """
-    Library for recovering web3 ETH signatures.
-    """
-  end
-
-  def package do
-    [
-
-      files: ["lib", "mix.exs", "README*", "LICENSE*"],
-      maintainers: ["Hawku, Inc,", "Charlie Graham"],
-      licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/hawku-com/ex_web3_ec_recover"}
-    ]
-  end
-
+  
   def project do
     [
 
@@ -42,6 +27,24 @@ defmodule ExWeb3EcRecover.MixProject do
       extra_applications: [:logger]
     ]
   end
+
+  defp description do
+    """
+    Library for recovering web3 ETH signatures.
+    """
+  end
+
+  defp package do
+    [
+
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
+      maintainers: ["Hawku, Inc,", "Charlie Graham"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/hawku-com/ex_web3_ec_recover"}
+    ]
+  end
+
+
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
