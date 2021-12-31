@@ -4,7 +4,7 @@ defmodule ExWeb3EcRecover do
   """
 
   @doc """
-  Hello world.
+  Returns the address that created the signature for a personal signed message on the ETH network.  Useful for checking metamask signatures.  Returns error if sig is invalid.
 
   ## Examples
 
@@ -13,7 +13,6 @@ defmodule ExWeb3EcRecover do
 
 
   """
-
   require Logger 
   def recover_personal_signature(params = %{sig: _signature_hex, msg: _message }) do
     ExWeb3EcRecover.RecoverPersonalSignature.recover_personal_signature(params)
