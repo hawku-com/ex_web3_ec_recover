@@ -4,6 +4,9 @@ Library for recovering and verifying public keys from signatures,
 
 ## Installation
 
+This package relies on `ExSecp256k1` which uses Rust.
+Please visit [rusts website](https://www.rust-lang.org/tools/install) and install it.
+
 The package can be installed
 by adding `ex_web3_ec_recover` to your list of dependencies in `mix.exs`:
 
