@@ -27,17 +27,30 @@ defmodule ExWeb3EcRecover.SignedTypedData do
 
   defp encode_data(type, value) when type in ["bytes", "string"], do: ExKeccak.hash_256(value)
 
-  defp encode_data("int" <> _bytes_length = type, value),
-    do: ABI.TypeEncoder.encode_raw(value, type)
+  defp encode_data("int" <> bytes_length, value),
+    do: encode_atomic("int", bytes_length, value)
 
-  defp encode_data("uint" <> _bytes_length = type, value),
-    do: ABI.TypeEncoder.encode_raw(value, type)
+  defp encode_data("uint" <> bytes_length, value),
+    do: encode_atomic("uint", bytes_length, value)
 
-  defp encode_data("bytes" <> _bytes_length = type, value),
-    do: ABI.TypeEncoder.encode_raw(value, type)
+  defp encode_data("bytes" <> bytes_length, value),
+    do: encode_atomic("bytes", bytes_length, value)
 
-  defp encode_data(type, value) when type in ["bool", "address"],
-    do: ABI.TypeEncoder.encode_raw(value, type)
+  defp encode_data("bool", value),
+    do: ABI.TypeEncoder.encode_raw([value], [:bool])
+
+  defp encode_data("address", value),
+    do: ABI.TypeEncoder.encode_raw([value], [:address])
+
+  defp encode_atomic(type, bytes_length, value) do
+    case Integer.parse(bytes_length) do
+      {number, ""} ->
+        ABI.TypeEncoder.encode_raw([value], [{String.to_existing_atom(type), number}])
+
+      :error ->
+        raise "Malformed type in spec"
+    end
+  end
 
   def encode_types(spec, primary_type) do
     sorted_deps =
@@ -73,7 +86,7 @@ defmodule ExWeb3EcRecover.SignedTypedData do
     arguments =
       spec[dep]
       |> Enum.map(fn %{"name" => name, "type" => type} -> [type, " ", name] end)
-      |> Enum.intersperse(" ")
+      |> Enum.intersperse(",")
 
     [dep, "(", arguments, ")"]
   end

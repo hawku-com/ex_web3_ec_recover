@@ -21,6 +21,39 @@ defmodule ExWeb3EcRecover.SignedTypedDataTest do
     assert target == SignedTypedData.encode(message, types, primary_type)
   end
 
+  test "Encodes a complex message" do
+    types = %{
+      "Message" => [
+        %{"name" => "data", "type" => "string"},
+        %{"name" => "data1", "type" => "int8"},
+        %{"name" => "data2", "type" => "uint8"},
+        %{"name" => "data3", "type" => "bytes3"},
+        %{"name" => "data4", "type" => "bool"},
+        %{"name" => "data5", "type" => "address"}
+      ]
+    }
+
+    primary_type = "Message"
+    address = "9C33FE912f9A300D82128558B1b89b998297C9d7" |> String.upcase() |> Base.decode16!()
+
+    message = %{
+      "data" => "test",
+      "data1" => 2,
+      "data2" => 3,
+      "data3" => "123",
+      "data4" => false,
+      "data5" => address
+    }
+
+    # This was generated with metamask
+    target =
+      ("154b83c1fe93881c6437ca5c83c61e344549f92ebbb9ac03d19c8eb4c2168de69c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb65800000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003313233000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009c33fe912f9a300d82128558b1b89b998297c9d7")
+      |> String.upcase()
+      |> Base.decode16!()
+
+      assert target == SignedTypedData.encode(message, types, primary_type)
+  end
+
   test "Encodes a simple type" do
     spec = %{"Message" => [%{"name" => "data", "type" => "string"}]}
 
