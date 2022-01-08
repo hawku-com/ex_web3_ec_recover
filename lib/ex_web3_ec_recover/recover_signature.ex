@@ -17,11 +17,12 @@ defmodule ExWeb3EcRecover.RecoverSignature do
 
     domain_types = Map.merge(types, %{@eip712 => domain_types})
     domain_separator = SignedTypedData.hash_message(domain, domain_types, @eip712)
+    message_hash = SignedTypedData.hash_message(data, types, primary_type)
 
     [
       @prefix_1901,
       domain_separator,
-      ExWeb3EcRecover.SignedTypedData.hash_message(data, types, primary_type)
+      message_hash
     ]
     |> :erlang.iolist_to_binary()
     |> ExKeccak.hash_256()
