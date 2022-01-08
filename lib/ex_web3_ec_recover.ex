@@ -16,7 +16,7 @@ defmodule ExWeb3EcRecover do
   require Logger
 
   def recover_personal_signature(params = %{sig: _signature_hex, msg: _message}) do
-    ExWeb3EcRecover.RecoverPersonalSignature.recover_personal_signature(params)
+    ExWeb3EcRecover.RecoverSignature.recover_personal_signature(params)
   end
 
   def recover_personal_signature(_other) do
