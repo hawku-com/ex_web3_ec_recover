@@ -110,5 +110,4 @@ defmodule ExWeb3EcRecover.SignedTypedDataTest do
       assert target == SignedTypedData.encode_types(types, "Message")
     end
   end
-
 end

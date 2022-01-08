@@ -9,14 +9,14 @@ defmodule ExWeb3EcRecover.RecoverSignature do
   alias ExWeb3EcRecover.PersonalType
   alias ExWeb3EcRecover.SignedTypedData
 
-  def recover_typed_signature(data, types, primary_type, domain, sig, version)
+  def recover_typed_signature(data, domain_types, types, primary_type, domain, sig, version)
 
-  def recover_typed_signature(data, types, primary_type, domain, sig, version)
+  def recover_typed_signature(data, domain_types, types, primary_type, domain, sig, version)
       when version in @allowed_versions do
     {r, s, v_num} = convert_sig_to_components(sig)
 
-    domain_types = Map.merge(types, %{@eip712 => domain})
-    domain_separator = SignedTypedData.hash_message(data, domain_types, @eip712)
+    domain_types = Map.merge(types, %{@eip712 => domain_types})
+    domain_separator = SignedTypedData.hash_message(domain, domain_types, @eip712)
 
     [
       @prefix_1901,
@@ -32,8 +32,16 @@ defmodule ExWeb3EcRecover.RecoverSignature do
     end
   end
 
-  def recover_typed_signature(_data, _types, _primary_type, _domain, _sig, _version),
-    do: {:error, :unsupported_version}
+  def recover_typed_signature(
+        _data,
+        _domain_types,
+        _types,
+        _primary_type,
+        _domain,
+        _sig,
+        _version
+      ),
+      do: {:error, :unsupported_version}
 
   def recover_personal_signature(%{sig: signature_hex, msg: message}) do
     {r, s, v_num} = convert_sig_to_components(signature_hex)
