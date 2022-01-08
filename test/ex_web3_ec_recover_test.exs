@@ -67,7 +67,7 @@ defmodule ExWeb3EcRecoverTest do
       "name" => "example.metamask.io",
       "version" => "3",
       "chainId" => 1,
-      "verifyingContract" => "0000000000000000000000000000000000000000" |> Base.decode16!()
+      "verifyingContract" => <<0::160>>
     }
 
     assert expected_address ==
