@@ -1,10 +1,11 @@
-defmodule ExWeb3EcRecover.RecoverPersonalSignature do
+defmodule ExWeb3EcRecover.RecoverSignature do
   @moduledoc false
 
   @prefix_1901 Base.decode16!("1901")
 
   @allowed_versions [:v3, :v4]
 
+  alias ExWeb3EcRecover.PersonalType
   alias ExWeb3EcRecover.SignedTypedData
 
   def recover_typed_signature(data, types, primary_type, domain, sig, version)
@@ -37,7 +38,7 @@ defmodule ExWeb3EcRecover.RecoverPersonalSignature do
     {r, s, v_num} = convert_sig_to_components(signature_hex)
 
     message
-    |> create_hash_from_personal_message()
+    |> PersonalType.create_hash_from_personal_message()
     |> ExSecp256k1.recover(r, s, v_num)
     |> case do
       {:ok, recovered_key} -> get_address_from_recovered_key(recovered_key)
@@ -72,8 +73,5 @@ defmodule ExWeb3EcRecover.RecoverPersonalSignature do
     {r, s, v_num - 27}
   end
 
-  defp create_hash_from_personal_message(orig_message) do
-    ("\u0019Ethereum Signed Message:\n#{byte_size(orig_message)}" <> orig_message)
-    |> ExKeccak.hash_256()
-  end
+
 end
