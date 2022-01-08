@@ -87,12 +87,4 @@ defmodule ExWeb3EcRecover.SignedTypedData do
 
     [dep, "(", arguments, ")"]
   end
-
-  # [
-  #   # @output_type_hash,
-  #   ABI.TypeEncoder.encode_raw([output_type], [{:uint, 256}]),
-  #   ABI.TypeEncoder.encode_raw([owner], [{:bytes, 20}]),
-  #   ABI.TypeEncoder.encode_raw([currency], [:address]),
-  #   ABI.TypeEncoder.encode_raw([amount], [{:uint, 256}])
-  # ]
 end

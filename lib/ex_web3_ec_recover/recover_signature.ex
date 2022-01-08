@@ -72,6 +72,4 @@ defmodule ExWeb3EcRecover.RecoverSignature do
 
     {r, s, v_num - 27}
   end
-
-
 end

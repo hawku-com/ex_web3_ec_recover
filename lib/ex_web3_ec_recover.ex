@@ -24,4 +24,7 @@ defmodule ExWeb3EcRecover do
       message:
         "Invalid recover_personal_signature argument.  Should be %{sig: signature, msg: message}"
   end
+
+  defdelegate recover_typed_signature(data, types, primary_type, domain, sig, version),
+    to: ExWeb3EcRecover.RecoverSignature
 end
