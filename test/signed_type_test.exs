@@ -79,8 +79,6 @@ defmodule ExWeb3EcRecover.SignedTypedDataTest do
       |> String.upcase()
       |> Base.decode16!()
 
-    "Message(Test data,ATest data)ATest(string data)Test(string data)"
-    "Message(string data,Test data)ATet(string data)Test(ATet data)"
     assert target == SignedTypedData.encode_types(spec, "Message")
   end
 end
