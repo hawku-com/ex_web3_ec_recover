@@ -13,8 +13,6 @@ defmodule ExWeb3EcRecover.RecoverSignature do
 
   def recover_typed_signature(data, domain_types, types, primary_type, domain, sig, version)
       when version in @allowed_versions do
-    {r, s, v_num} = convert_sig_to_components(sig)
-
     domain_types = Map.merge(types, %{@eip712 => domain_types})
     domain_separator = SignedTypedData.hash_message(domain, domain_types, @eip712)
     message_hash = SignedTypedData.hash_message(data, types, primary_type)
@@ -26,11 +24,7 @@ defmodule ExWeb3EcRecover.RecoverSignature do
     ]
     |> :erlang.iolist_to_binary()
     |> ExKeccak.hash_256()
-    |> ExSecp256k1.recover(r, s, v_num)
-    |> case do
-      {:ok, recovered_key} -> get_address_from_recovered_key(recovered_key)
-      {:error, _reason} = error -> error
-    end
+    |> do_recover_sig(sig)
   end
 
   def recover_typed_signature(
@@ -44,11 +38,16 @@ defmodule ExWeb3EcRecover.RecoverSignature do
       ),
       do: {:error, :unsupported_version}
 
-  def recover_personal_signature(%{sig: signature_hex, msg: message}) do
-    {r, s, v_num} = convert_sig_to_components(signature_hex)
-
+  def recover_personal_signature(%{sig: sig, msg: message}) do
     message
     |> PersonalType.create_hash_from_personal_message()
+    |> do_recover_sig(sig)
+  end
+
+  defp do_recover_sig(hash, sig) do
+    {r, s, v_num} = convert_sig_to_components(sig)
+
+    hash
     |> ExSecp256k1.recover(r, s, v_num)
     |> case do
       {:ok, recovered_key} -> get_address_from_recovered_key(recovered_key)
