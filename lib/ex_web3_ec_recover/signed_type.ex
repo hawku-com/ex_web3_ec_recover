@@ -17,7 +17,12 @@ defmodule ExWeb3EcRecover.SignedTypedData do
     spec[primary_type]
     |> Enum.map(fn %{"name" => name, "type" => type} ->
       value = data[name]
-      encode_data(type, value)
+
+      if custom_type?(spec, type) do
+        hash_message(value, spec, type)
+      else
+        encode_data(type, value)
+      end
     end)
     |> Enum.join()
   end
