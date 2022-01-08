@@ -29,9 +29,9 @@ defmodule ExWeb3EcRecover do
     sig = "0xf75d91c136214ad9d73b4117109982ac905d0e90b5fff7c69ba59dba0669e56"<>
       "922cc936feb67993627b56542d138e151de0e196962e38aabf834b002b01592211c"
 
-    message = ExWeb3EcRecover.SignedTypedData.Message.from_map(raw_message)
+    message = ExWeb3EcRecover.Message.from_map(raw_message)
 
-    ExWeb3EcRecover.RecoverSignature.recover_typed_signature(
+    ExWeb3EcRecover.recover_typed_signature(
       message,
       sig,
       :v4
@@ -40,4 +40,18 @@ defmodule ExWeb3EcRecover do
   """
   defdelegate recover_typed_signature(message, sig, version),
     to: ExWeb3EcRecover.RecoverSignature
+
+  @doc """
+  This function transforms 0x prefixed hex string into an elixir binary
+
+  ## Examples
+
+      iex> ExWeb3EcRecover.parse_hex("0x00")
+      <<0>>
+  """
+  def parse_hex(hex_string) do
+    hex_string
+    |> String.trim_leading("0x")
+    |> Base.decode16!(case: :mixed)
+  end
 end
