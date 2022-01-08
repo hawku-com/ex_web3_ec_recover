@@ -8,14 +8,16 @@ defmodule ExWeb3EcRecover.RecoverSignature do
 
   alias ExWeb3EcRecover.PersonalType
   alias ExWeb3EcRecover.SignedTypedData
+  alias ExWeb3EcRecover.SignedTypedData.Message
 
-  def recover_typed_signature(data, domain_types, types, primary_type, domain, sig, version)
+  def recover_typed_signature(message, sig, version)
 
-  def recover_typed_signature(data, domain_types, types, primary_type, domain, sig, version)
+  def recover_typed_signature(%Message{} = message, sig, version)
       when version in @allowed_versions do
-    domain_types = Map.merge(types, %{@eip712 => domain_types})
-    domain_separator = SignedTypedData.hash_message(domain, domain_types, @eip712)
-    message_hash = SignedTypedData.hash_message(data, types, primary_type)
+    domain_separator = SignedTypedData.hash_message(message.domain, message.types, @eip712)
+
+    message_hash =
+      SignedTypedData.hash_message(message.message, message.types, message.primary_type)
 
     [
       @prefix_1901,
@@ -27,28 +29,17 @@ defmodule ExWeb3EcRecover.RecoverSignature do
     |> do_recover_sig(sig)
   end
 
-  def recover_typed_signature(
-        _data,
-        _domain_types,
-        _types,
-        _primary_type,
-        _domain,
-        _sig,
-        _version
-      ),
-      do: {:error, :unsupported_version}
+  def recover_typed_signature(_message, _sig, _version), do: {:error, :unsupported_version}
 
-  def recover_personal_signature(%{sig: sig, msg: message}) do
+  def recover_personal_signature(message, sig) do
     message
     |> PersonalType.create_hash_from_personal_message()
     |> do_recover_sig(sig)
   end
 
   defp do_recover_sig(hash, sig) do
-    {r, s, v_num} = convert_sig_to_components(sig)
-
     hash
-    |> ExSecp256k1.recover(r, s, v_num)
+    |> ExSecp256k1.recover(sig.r, sig.s, sig.v_num)
     |> case do
       {:ok, recovered_key} -> get_address_from_recovered_key(recovered_key)
       {:error, _reason} = error -> error
@@ -64,21 +55,5 @@ defmodule ExWeb3EcRecover.RecoverSignature do
       |> String.slice(-40..-1)
 
     "0x#{address}"
-  end
-
-  defp convert_sig_to_components(signature_hex) do
-    sig_binary =
-      signature_hex
-      |> String.trim_leading("0x")
-      |> Base.decode16!(case: :lower)
-
-    r = binary_part(sig_binary, 0, 32)
-    s = binary_part(sig_binary, 32, 32)
-
-    v_num =
-      binary_part(sig_binary, 64, 1)
-      |> :binary.decode_unsigned()
-
-    {r, s, v_num - 27}
   end
 end
