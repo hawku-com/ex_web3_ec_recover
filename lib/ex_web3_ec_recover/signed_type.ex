@@ -1,10 +1,37 @@
 defmodule ExWeb3EcRecover.SignedTypedData do
+  @moduledoc """
+  This module was written based on nomenclature
+  and algorithm specified in the [EIP-712](https://eips.ethereum.org/EIPS/eip-712#specification)
+  """
+
   @max_depth 5
+
+  @typedoc """
+  The map shape of this field must conform to:
+  ```
+  %{
+    "name" => String.t(),
+    "type" => String.t()
+  }
+  ```
+  """
+  @type field :: %{String.t() => String.t()}
+
+  @type types :: %{String.t() => [field()]}
+
+  @doc """
+  Returns a hash of a message.
+  """
+  @spec hash_message(map(), types(), String.t()) :: hash :: binary()
   def hash_message(message, types, primary_type) do
     encode(message, types, primary_type)
     |> ExKeccak.hash_256()
   end
 
+  @doc """
+  Encodes a message according to EIP-712
+  """
+  @spec encode(map(), [field()], String.t()) :: binary()
   def encode(message, types, primary_type) do
     [
       encode_types(types, primary_type),
@@ -13,6 +40,7 @@ defmodule ExWeb3EcRecover.SignedTypedData do
     |> :erlang.iolist_to_binary()
   end
 
+  @spec encode_type(map(), String.t(), types()) :: binary()
   def encode_type(data, primary_type, types) do
     types[primary_type]
     |> Enum.map(fn %{"name" => name, "type" => type} ->
