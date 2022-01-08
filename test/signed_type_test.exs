@@ -56,7 +56,7 @@ defmodule ExWeb3EcRecover.SignedTypedDataTest do
     end
 
     test "containing references" do
-      spec = %{
+      types = %{
         "Message" => [
           %{"name" => "data", "type" => "Test"}
         ],
@@ -77,23 +77,23 @@ defmodule ExWeb3EcRecover.SignedTypedDataTest do
         |> String.upcase()
         |> Base.decode16!()
 
-      assert target == SignedTypedData.encode(message, spec, "Message")
+      assert target == SignedTypedData.encode(message, types, "Message")
     end
   end
 
   describe "Encodes a type" do
     test "with only a basic property" do
-      spec = %{"Message" => [%{"name" => "data", "type" => "string"}]}
+      types = %{"Message" => [%{"name" => "data", "type" => "string"}]}
 
       target =
         <<205, 223, 65, 176, 116, 38, 225, 167, 97, 243, 218, 87, 227, 84, 116, 174, 61, 234, 165,
           181, 150, 48, 101, 49, 246, 81, 198, 220, 19, 33, 228, 253>>
 
-      assert target == SignedTypedData.encode_types(spec, "Message")
+      assert target == SignedTypedData.encode_types(types, "Message")
     end
 
     test "with nested references" do
-      spec = %{
+      types = %{
         "Message" => [
           %{"name" => "data", "type" => "string"},
           %{"name" => "data", "type" => "Test"}
@@ -107,7 +107,7 @@ defmodule ExWeb3EcRecover.SignedTypedDataTest do
         |> String.upcase()
         |> Base.decode16!()
 
-      assert target == SignedTypedData.encode_types(spec, "Message")
+      assert target == SignedTypedData.encode_types(types, "Message")
     end
   end
 

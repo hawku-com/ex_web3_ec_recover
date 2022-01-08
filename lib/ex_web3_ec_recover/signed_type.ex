@@ -13,13 +13,13 @@ defmodule ExWeb3EcRecover.SignedTypedData do
     |> :erlang.iolist_to_binary()
   end
 
-  def encode_type(data, primary_type, spec) do
-    spec[primary_type]
+  def encode_type(data, primary_type, types) do
+    types[primary_type]
     |> Enum.map(fn %{"name" => name, "type" => type} ->
       value = data[name]
 
-      if custom_type?(spec, type) do
-        hash_message(value, spec, type)
+      if custom_type?(types, type) do
+        hash_message(value, types, type)
       else
         encode_data(type, value)
       end
@@ -50,43 +50,43 @@ defmodule ExWeb3EcRecover.SignedTypedData do
         ABI.TypeEncoder.encode_raw([value], [{String.to_existing_atom(type), number}])
 
       :error ->
-        raise "Malformed type in spec"
+        raise "Malformed type in types"
     end
   end
 
-  def encode_types(spec, primary_type) do
+  def encode_types(types, primary_type) do
     sorted_deps =
-      spec
+      types
       |> find_deps(primary_type)
       |> MapSet.to_list()
       |> Enum.sort()
 
     [primary_type | sorted_deps]
-    |> Enum.map(&format_dep(&1, spec))
+    |> Enum.map(&format_dep(&1, types))
     |> :erlang.iolist_to_binary()
     |> ExKeccak.hash_256()
   end
 
-  defp find_deps(spec, primary_types, acc \\ MapSet.new(), depth \\ @max_depth) do
-    spec[primary_types]
+  defp find_deps(types, primary_types, acc \\ MapSet.new(), depth \\ @max_depth) do
+    types[primary_types]
     |> Enum.reduce(acc, fn %{"type" => type}, acc ->
-      if custom_type?(spec, type) do
+      if custom_type?(types, type) do
         acc = MapSet.put(acc, type)
-        find_deps(spec, type, acc, depth - 1)
+        find_deps(types, type, acc, depth - 1)
       else
         acc
       end
     end)
   end
 
-  defp custom_type?(spec, type) do
+  defp custom_type?(types, type) do
     # TODO verify not a builtin type
-    Map.has_key?(spec, type)
+    Map.has_key?(types, type)
   end
 
-  defp format_dep(dep, spec) do
+  defp format_dep(dep, types) do
     arguments =
-      spec[dep]
+      types[dep]
       |> Enum.map(fn %{"name" => name, "type" => type} -> [type, " ", name] end)
       |> Enum.intersperse(",")
 
