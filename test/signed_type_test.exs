@@ -47,11 +47,11 @@ defmodule ExWeb3EcRecover.SignedTypedDataTest do
 
     # This was generated with metamask
     target =
-      ("154b83c1fe93881c6437ca5c83c61e344549f92ebbb9ac03d19c8eb4c2168de69c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb65800000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003313233000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009c33fe912f9a300d82128558b1b89b998297c9d7")
+      "154b83c1fe93881c6437ca5c83c61e344549f92ebbb9ac03d19c8eb4c2168de69c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb65800000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003313233000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009c33fe912f9a300d82128558b1b89b998297c9d7"
       |> String.upcase()
       |> Base.decode16!()
 
-      assert target == SignedTypedData.encode(message, types, primary_type)
+    assert target == SignedTypedData.encode(message, types, primary_type)
   end
 
   test "Encodes a simple type" do
@@ -66,15 +66,21 @@ defmodule ExWeb3EcRecover.SignedTypedDataTest do
 
   test "Encodes type with references" do
     spec = %{
-      "Message" => [%{"name" => "data", "type" => "Test"}, %{"name" => "data", "type" => "ATest"}],
-      "Test" => [%{"name" => "data", "type" => "string"}],
-      "ATest" => [%{"name" => "data", "type" => "string"}]
+      "Message" => [
+        %{"name" => "data", "type" => "string"},
+        %{"name" => "data", "type" => "Test"}
+      ],
+      "Test" => [%{"name" => "data", "type" => "ATet"}],
+      "ATet" => [%{"name" => "data", "type" => "string"}]
     }
 
     target =
-      <<230, 128, 231, 58, 29, 152, 213, 193, 76, 198, 57, 141, 140, 221, 114, 248, 168, 91, 178,
-        243, 130, 213, 123, 82, 11, 206, 99, 66, 39, 146, 241, 137>>
+      "7031b1a85f03f91f16cb21cc404beb084c0901db5d25302c97760c35738c61f9"
+      |> String.upcase()
+      |> Base.decode16!()
 
+    "Message(Test data,ATest data)ATest(string data)Test(string data)"
+    "Message(string data,Test data)ATet(string data)Test(ATet data)"
     assert target == SignedTypedData.encode_types(spec, "Message")
   end
 end

@@ -1,14 +1,11 @@
 defmodule ExWeb3EcRecover.SignedTypedData do
-  @allowed_versions [:v3, :v4]
-
   @max_depth 5
-
-  def recover_signature(data, sig, version) when version in @allowed_versions do
+  def hash_message(message, types, primary_type) do
+    encode(message, types, primary_type)
+    |> ExKeccak.hash_256()
   end
 
-  def recover_signature(_data, _sig, _version), do: {:error, :unsupported_version}
-
-  def encode(message, types, primary_type, domain \\ %{}) do
+  def encode(message, types, primary_type) do
     [
       encode_types(types, primary_type),
       encode_type(message, primary_type, types)
