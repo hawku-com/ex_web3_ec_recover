@@ -2,6 +2,7 @@ defmodule ExWeb3EcRecover.RecoverSignature do
   @moduledoc false
 
   @prefix_1901 Base.decode16!("1901")
+  @eip712 "EIP712Domain"
 
   @allowed_versions [:v3, :v4]
 
@@ -14,8 +15,8 @@ defmodule ExWeb3EcRecover.RecoverSignature do
       when version in @allowed_versions do
     {r, s, v_num} = convert_sig_to_components(sig)
 
-    domain_types = Map.merge(types, %{"EIP712Domain" => domain})
-    domain_separator = SignedTypedData.hash_message(data, domain_types, "EIP712Domain")
+    domain_types = Map.merge(types, %{@eip712 => domain})
+    domain_separator = SignedTypedData.hash_message(data, domain_types, @eip712)
 
     [
       @prefix_1901,
