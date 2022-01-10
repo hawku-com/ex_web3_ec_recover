@@ -4,7 +4,8 @@ defmodule ExWeb3EcRecover do
   """
 
   @doc """
-  Returns the address that created the signature for a personal signed message on the ETH network.  Useful for checking metamask signatures.  Returns error if sig is invalid.
+  Returns the address that created the signature for a personal signed message on the ETH network.
+  Useful for checking metamask signatures. Raises an error if sig is invalid.
 
   ## Examples
 
@@ -16,7 +17,7 @@ defmodule ExWeb3EcRecover do
   require Logger
 
   def recover_personal_signature(params = %{sig: _signature_hex, msg: _message}) do
-    ExWeb3EcRecover.RecoverPersonalSignature.recover_personal_signature(params)
+    ExWeb3EcRecover.RecoverSignature.recover_personal_signature(params)
   end
 
   def recover_personal_signature(_other) do
@@ -24,4 +25,71 @@ defmodule ExWeb3EcRecover do
       message:
         "Invalid recover_personal_signature argument.  Should be %{sig: signature, msg: message}"
   end
+
+  @doc """
+  Returns the address that created the signature for a typed structured data signed message on the
+  ETH network. Useful for checking metamask signatures. Raises an error if sig is invalid.
+
+  ## Examples
+
+  ```
+    sig = "0xf75d91c136214ad9d73b4117109982ac905d0e90b5fff7c69ba59dba0669e56"<>
+      "922cc936feb67993627b56542d138e151de0e196962e38aabf834b002b01592211c"
+
+    types = %{"Message" => [%{"name" => "data", "type" => "string"}]}
+    primary_type = "Message"
+
+    message = %{
+      "data" => "test"
+    }
+
+    expected_address = "0x29c76e6ad8f28bb1004902578fb108c507be341b"
+
+    domain_types = [
+      %{
+        "name" => "name",
+        "type" => "string"
+      },
+      %{
+        "name" => "version",
+        "type" => "string"
+      },
+      %{
+        "name" => "chainId",
+        "type" => "uint256"
+      },
+      %{
+        "name" => "verifyingContract",
+        "type" => "address"
+      }
+    ]
+
+    domain = %{
+      "name" => "example.metamask.io",
+      "version" => "3",
+      "chainId" => 1,
+      "verifyingContract" => <<0::160>>
+    }
+
+    ExWeb3EcRecover.RecoverSignature.recover_typed_signature(
+      message,
+      domain_types,
+      types,
+      primary_type,
+      domain,
+      sig,
+      :v4
+    )
+  ```
+  """
+  defdelegate recover_typed_signature(
+                data,
+                domain_types,
+                types,
+                primary_type,
+                domain,
+                sig,
+                version
+              ),
+              to: ExWeb3EcRecover.RecoverSignature
 end

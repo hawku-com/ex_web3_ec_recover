@@ -47,7 +47,7 @@ defmodule ExWeb3EcRecover.MixProject do
       {:ex_secp256k1, "~> 0.3"},
       {:ex_keccak, "~> 0.3"},
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
-      {:dep_from_hexpm, "~> 0.3.0"}
+      {:ex_abi, "~> 0.5"}
     ]
   end
 end
