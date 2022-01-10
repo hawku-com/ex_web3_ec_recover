@@ -7,6 +7,7 @@ defmodule ExWeb3EcRecover.RecoverSignature do
   @allowed_versions [:v3, :v4]
 
   alias ExWeb3EcRecover.PersonalType
+  alias ExWeb3EcRecover.Signature
   alias ExWeb3EcRecover.SignedTypedData
   alias ExWeb3EcRecover.SignedTypedData.Message
 
@@ -37,7 +38,9 @@ defmodule ExWeb3EcRecover.RecoverSignature do
     |> do_recover_sig(sig)
   end
 
-  defp do_recover_sig(hash, sig) do
+  defp do_recover_sig(hash, sig_hexstring) do
+    sig = Signature.from_hexstring(sig_hexstring)
+
     hash
     |> ExSecp256k1.recover(sig.r, sig.s, sig.v_num)
     |> case do

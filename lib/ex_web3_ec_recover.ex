@@ -9,14 +9,14 @@ defmodule ExWeb3EcRecover do
 
   ## Examples
 
-      iex> ExWeb3EcRecover.recover_personal_signature("hello world", "0x1dd3657c91d95f350ab25f17ee7cbcdbccd3f5bc52976bfd4dd03bd6bc29d2ac23e656bee509ca33b921e0e6b53eb64082be1bb3c69c3a4adccd993b1d667f8d1b" |> ExWeb3EcRecover.Signature.from_binary())
+      iex> ExWeb3EcRecover.recover_personal_signature("hello world", "0x1dd3657c91d95f350ab25f17ee7cbcdbccd3f5bc52976bfd4dd03bd6bc29d2ac23e656bee509ca33b921e0e6b53eb64082be1bb3c69c3a4adccd993b1d667f8d1b")
       "0xb117a8bc3ecf2c3f006b89da6826e49b4193977a"
 
   """
   require Logger
 
-  def recover_personal_signature(message, %ExWeb3EcRecover.Signature{} = sig) do
-    ExWeb3EcRecover.RecoverSignature.recover_personal_signature(message, sig)
+  def recover_personal_signature(message, sig_hexstring) do
+    ExWeb3EcRecover.RecoverSignature.recover_personal_signature(message, sig_hexstring)
   end
 
   @doc """
