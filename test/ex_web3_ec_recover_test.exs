@@ -4,7 +4,6 @@ defmodule ExWeb3EcRecoverTest do
   doctest ExWeb3EcRecover
 
   alias ExWeb3EcRecover.SignedTypedData.Message
-  alias ExWeb3EcRecover.Signature
 
   test "Recovers address from a signature and the message" do
     # This sig was genarated using Meta Mask
@@ -12,7 +11,6 @@ defmodule ExWeb3EcRecoverTest do
       ("0xf6cda8eaf5137e8cc15d48d03a002b0512446e2a7acbc576c01cfbe40ad" <>
          "9345663ccda8884520d98dece9a8bfe38102851bdae7f69b3d8612b9808e6" <>
          "337801601b")
-      |> Signature.from_binary()
 
     message = %Message{
       types: %{
@@ -36,7 +34,7 @@ defmodule ExWeb3EcRecoverTest do
     # This sig was genarated using Meta Mask
     sig =
       "0xf75d91c136214ad9d73b4117109982ac905d0e90b5fff7c69ba59dba0669e56922cc936feb67993627b56542d138e151de0e196962e38aabf834b002b01592211c"
-      |> Signature.from_binary()
+
 
     message = %Message{
       types: %{
