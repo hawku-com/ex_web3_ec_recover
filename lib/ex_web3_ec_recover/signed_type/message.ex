@@ -1,4 +1,4 @@
-defmodule ExWeb3EcRecover.SignedTypedData.Message do
+defmodule ExWeb3EcRecover.SignedType.Message do
   @moduledoc """
   This module represents a message data structure that is used
   to sign and recover, based on EIP 712.

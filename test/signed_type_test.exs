@@ -1,7 +1,7 @@
-defmodule ExWeb3EcRecover.SignedTypedDataTest do
+defmodule ExWeb3EcRecover.SignedTypeTest do
   use ExUnit.Case, async: true
 
-  alias ExWeb3EcRecover.SignedTypedData
+  alias ExWeb3EcRecover.SignedType
 
   describe "Encodes a message" do
     test "with single basic property" do
@@ -19,7 +19,7 @@ defmodule ExWeb3EcRecover.SignedTypedDataTest do
         |> String.upcase()
         |> Base.decode16!()
 
-      assert target == SignedTypedData.encode(message, types, primary_type)
+      assert target == SignedType.encode(message, types, primary_type)
     end
 
     test "with all dynamic and atomic values" do
@@ -58,7 +58,7 @@ defmodule ExWeb3EcRecover.SignedTypedDataTest do
         |> String.upcase()
         |> Base.decode16!()
 
-      assert target == SignedTypedData.encode(message, types, primary_type)
+      assert target == SignedType.encode(message, types, primary_type)
     end
 
     test "containing references" do
@@ -83,7 +83,7 @@ defmodule ExWeb3EcRecover.SignedTypedDataTest do
         |> String.upcase()
         |> Base.decode16!()
 
-      assert target == SignedTypedData.encode(message, types, "Message")
+      assert target == SignedType.encode(message, types, "Message")
     end
   end
 
@@ -95,7 +95,7 @@ defmodule ExWeb3EcRecover.SignedTypedDataTest do
         <<205, 223, 65, 176, 116, 38, 225, 167, 97, 243, 218, 87, 227, 84, 116, 174, 61, 234, 165,
           181, 150, 48, 101, 49, 246, 81, 198, 220, 19, 33, 228, 253>>
 
-      assert target == SignedTypedData.encode_types(types, "Message")
+      assert target == SignedType.encode_types(types, "Message")
     end
 
     test "with nested references" do
@@ -113,7 +113,7 @@ defmodule ExWeb3EcRecover.SignedTypedDataTest do
         |> String.upcase()
         |> Base.decode16!()
 
-      assert target == SignedTypedData.encode_types(types, "Message")
+      assert target == SignedType.encode_types(types, "Message")
     end
   end
 end
