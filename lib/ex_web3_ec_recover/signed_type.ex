@@ -40,6 +40,7 @@ defmodule ExWeb3EcRecover.SignedType do
   @spec encode(map(), [field()], String.t(), Keyword.t()) :: binary()
   def encode(message, types, primary_type, opts \\ []) do
     encoder = Keyword.get(opts, :encoder, @default_encoder)
+
     [
       encode_types(types, primary_type),
       encode_type(message, primary_type, types, encoder)
@@ -61,8 +62,6 @@ defmodule ExWeb3EcRecover.SignedType do
     end)
     |> Enum.join()
   end
-
-
 
   def encode_types(types, primary_type) do
     sorted_deps =
