@@ -8,17 +8,16 @@ defmodule ExWeb3EcRecover.RecoverSignature do
 
   alias ExWeb3EcRecover.PersonalType
   alias ExWeb3EcRecover.Signature
-  alias ExWeb3EcRecover.SignedTypedData
-  alias ExWeb3EcRecover.SignedTypedData.Message
+  alias ExWeb3EcRecover.SignedType
+  alias ExWeb3EcRecover.SignedType.Message
 
   def recover_typed_signature(message, sig, version)
 
   def recover_typed_signature(%Message{} = message, sig, version)
       when version in @allowed_versions do
-    domain_separator = SignedTypedData.hash_message(message.domain, message.types, @eip712)
+    domain_separator = SignedType.hash_message(message.domain, message.types, @eip712)
 
-    message_hash =
-      SignedTypedData.hash_message(message.message, message.types, message.primary_type)
+    message_hash = SignedType.hash_message(message.message, message.types, message.primary_type)
 
     [
       @prefix_1901,

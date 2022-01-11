@@ -3,7 +3,7 @@ defmodule ExWeb3EcRecoverTest do
 
   doctest ExWeb3EcRecover
 
-  alias ExWeb3EcRecover.SignedTypedData.Message
+  alias ExWeb3EcRecover.SignedType.Message
 
   test "Recovers address from a signature and the message" do
     # This sig was genarated using Meta Mask
