@@ -4,6 +4,12 @@ defmodule ExWeb3EcRecover.SignedType do
   and algorithm specified in the [EIP-712](https://eips.ethereum.org/EIPS/eip-712#specification)
   """
 
+  defmodule Encoder do
+    @callback encode_value(value :: any(), type :: String.t()) :: binary()
+  end
+
+  @default_encoder __MODULE__.BinaryEncoder
+
   @max_depth 5
 
   @typedoc """
@@ -22,26 +28,27 @@ defmodule ExWeb3EcRecover.SignedType do
   @doc """
   Returns a hash of a message.
   """
-  @spec hash_message(map(), types(), String.t()) :: hash :: binary()
-  def hash_message(message, types, primary_type) do
-    encode(message, types, primary_type)
+  @spec hash_message(map(), types(), String.t(), Keyword.t()) :: hash :: binary()
+  def hash_message(message, types, primary_type, opts \\ []) do
+    encode(message, types, primary_type, opts)
     |> ExKeccak.hash_256()
   end
 
   @doc """
   Encodes a message according to EIP-712
   """
-  @spec encode(map(), [field()], String.t()) :: binary()
-  def encode(message, types, primary_type) do
+  @spec encode(map(), [field()], String.t(), Keyword.t()) :: binary()
+  def encode(message, types, primary_type, opts \\ []) do
+    encoder = Keyword.get(opts, :encoder, @default_encoder)
     [
       encode_types(types, primary_type),
-      encode_type(message, primary_type, types)
+      encode_type(message, primary_type, types, encoder)
     ]
     |> :erlang.iolist_to_binary()
   end
 
-  @spec encode_type(map(), String.t(), types()) :: binary()
-  def encode_type(data, primary_type, types) do
+  @spec encode_type(map(), String.t(), types(), module()) :: binary()
+  def encode_type(data, primary_type, types, encoder) do
     types[primary_type]
     |> Enum.map(fn %{"name" => name, "type" => type} ->
       value = data[name]
@@ -49,38 +56,13 @@ defmodule ExWeb3EcRecover.SignedType do
       if custom_type?(types, type) do
         hash_message(value, types, type)
       else
-        encode_data(type, value)
+        encoder.encode_value(type, value)
       end
     end)
     |> Enum.join()
   end
 
-  defp encode_data(type, value) when type in ["bytes", "string"], do: ExKeccak.hash_256(value)
 
-  defp encode_data("int" <> bytes_length, value),
-    do: encode_atomic("int", bytes_length, value)
-
-  defp encode_data("uint" <> bytes_length, value),
-    do: encode_atomic("uint", bytes_length, value)
-
-  defp encode_data("bytes" <> bytes_length, value),
-    do: encode_atomic("bytes", bytes_length, value)
-
-  defp encode_data("bool", value),
-    do: ABI.TypeEncoder.encode_raw([value], [:bool])
-
-  defp encode_data("address", value),
-    do: ABI.TypeEncoder.encode_raw([value], [:address])
-
-  defp encode_atomic(type, bytes_length, value) do
-    case Integer.parse(bytes_length) do
-      {number, ""} ->
-        ABI.TypeEncoder.encode_raw([value], [{String.to_existing_atom(type), number}])
-
-      :error ->
-        raise "Malformed type in types"
-    end
-  end
 
   def encode_types(types, primary_type) do
     sorted_deps =
