@@ -65,7 +65,7 @@ defmodule ExWeb3EcRecover.SignedType.Message do
         "domain" => domain,
         "message" => message,
         "types" => types,
-        "primary_type" => primary_type
+        "primaryType" => primary_type
       }) do
     data = %__MODULE__{
       domain: domain,
