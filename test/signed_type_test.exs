@@ -35,7 +35,6 @@ defmodule ExWeb3EcRecover.SignedTypeTest do
       }
 
       primary_type = "Message"
-      address = "9C33FE912f9A300D82128558B1b89b998297C9d7" |> String.upcase() |> Base.decode16!()
 
       message = %{
         "data" => "test",
@@ -43,7 +42,7 @@ defmodule ExWeb3EcRecover.SignedTypeTest do
         "data2" => 3,
         "data3" => "123",
         "data4" => false,
-        "data5" => address
+        "data5" => "9C33FE912f9A300D82128558B1b89b998297C9d7"
       }
 
       # This was generated with metamask

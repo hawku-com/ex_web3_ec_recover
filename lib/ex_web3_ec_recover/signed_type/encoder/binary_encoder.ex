@@ -24,7 +24,7 @@ defmodule ExWeb3EcRecover.SignedType.BinaryEncoder do
         ABI.TypeEncoder.encode_raw([value], [{String.to_existing_atom(type), number}])
 
       :error ->
-        raise "Malformed type in types"
+        raise "Malformed type `#{type}` in types, with value #{value}"
     end
   end
 end

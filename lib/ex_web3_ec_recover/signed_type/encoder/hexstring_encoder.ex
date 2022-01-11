@@ -1,6 +1,14 @@
 defmodule ExWeb3EcRecover.SignedType.HexStringEncoder do
   @behaviour ExWeb3EcRecover.SignedType.Encoder
 
+  def encode_value("string", value), do: ExKeccak.hash_256(value)
+
+  def encode_value("bytes", value) do
+    value
+    |> ExWeb3EcRecover.parse_hex()
+    |> ExKeccak.hash_256()
+  end
+
   def encode_value("int" <> bytes_length, value),
     do: encode_value_atomic("int", bytes_length, value)
 
@@ -13,14 +21,6 @@ defmodule ExWeb3EcRecover.SignedType.HexStringEncoder do
   def encode_value("bool", value),
     do: ABI.TypeEncoder.encode_raw([value], [:bool])
 
-  def encode_value("string", value), do: ExKeccak.hash_256(value)
-
-  def encode_value("bytes", value) do
-    value
-    |> ExWeb3EcRecover.parse_hex()
-    |> ExKeccak.hash_256()
-  end
-
   def encode_value("address", value) do
     value = ExWeb3EcRecover.parse_hex(value)
     ABI.TypeEncoder.encode_raw([value], [:address])
@@ -32,7 +32,7 @@ defmodule ExWeb3EcRecover.SignedType.HexStringEncoder do
         ABI.TypeEncoder.encode_raw([value], [{String.to_existing_atom(type), number}])
 
       :error ->
-        raise "Malformed type in types"
+        raise "Malformed type `#{type}` in types, with value #{value}"
     end
   end
 end

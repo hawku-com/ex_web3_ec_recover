@@ -65,7 +65,7 @@ defmodule ExWeb3EcRecoverTest do
         "name" => "example.metamask.io",
         "version" => "3",
         "chainId" => 1,
-        "verifyingContract" => <<0::160>>
+        "verifyingContract" => "0x"
       }
     }
 
