@@ -8,7 +8,7 @@ defmodule ExWeb3EcRecover.SignedType do
     @callback encode_value(value :: any(), type :: String.t()) :: binary()
   end
 
-  @default_encoder __MODULE__.BinaryEncoder
+  @default_encoder __MODULE__.HexStringEncoder
 
   @max_depth 5
 
