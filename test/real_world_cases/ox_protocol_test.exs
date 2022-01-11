@@ -73,9 +73,8 @@ defmodule ExWeb3EcRecover.RealWorldCases.OxProtocolTest do
     }
 
     sig =
-      ("0x16818763816e1aae13ee603e677cfc79e50909518bf0941ff9ed5a8e74b7b4ee50" <>
-         "820810b3598f6d5bd90db7dd43e8992a628c1b003d13c86c0b2a3a2cde67531b")
-      |> ExWeb3EcRecover.Signature.from_binary()
+      "0x16818763816e1aae13ee603e677cfc79e50909518bf0941ff9ed5a8e74b7b4ee50" <>
+        "820810b3598f6d5bd90db7dd43e8992a628c1b003d13c86c0b2a3a2cde67531b"
 
     target = "0x29c76e6ad8f28bb1004902578fb108c507be341b"
     assert target == ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
