@@ -1,4 +1,4 @@
-defmodule ExWeb3EcRecover.SignedTypedData do
+defmodule ExWeb3EcRecover.SignedType do
   @moduledoc """
   This module was written based on nomenclature
   and algorithm specified in the [EIP-712](https://eips.ethereum.org/EIPS/eip-712#specification)
