@@ -41,32 +41,25 @@ defmodule ExWeb3EcRecover.RealWorldCases.OxProtocolTest do
         "name" => "0x Protocol",
         "version" => "3.0.0",
         "chainId" => 137,
-        "verifyingContract" =>
-          "0xfede379e48c873c75f3cc0c81f7c784ad730a8f7" |> ExWeb3EcRecover.parse_hex()
+        "verifyingContract" => "0xfede379e48c873c75f3cc0c81f7c784ad730a8f7"
       },
       message: %{
-        "makerAddress" =>
-          "0x1bbeb0a1a075d870bed8c21dfbe49a37015e4124" |> ExWeb3EcRecover.parse_hex(),
-        "takerAddress" =>
-          "0x0000000000000000000000000000000000000000" |> ExWeb3EcRecover.parse_hex(),
-        "senderAddress" =>
-          "0x0000000000000000000000000000000000000000" |> ExWeb3EcRecover.parse_hex(),
-        "feeRecipientAddress" =>
-          "0x0000000000000000000000000000000000000000" |> ExWeb3EcRecover.parse_hex(),
+        "makerAddress" => "0x1bbeb0a1a075d870bed8c21dfbe49a37015e4124",
+        "takerAddress" => "0x0000000000000000000000000000000000000000",
+        "senderAddress" => "0x0000000000000000000000000000000000000000",
+        "feeRecipientAddress" => "0x0000000000000000000000000000000000000000",
         "expirationTimeSeconds" => 1_641_635_545,
         "salt" => 1,
         "makerAssetAmount" => 1,
         "takerAssetAmount" => 50_000_000_000_000_000,
         "makerAssetData" =>
-          ("02571792000000000000000000000000a5f1ea7df861952863df2e8d1312f7305d" <>
-             "abf215000000000000000000000000000000000000000000000000000000000000" <>
-             "2b5b")
-          |> ExWeb3EcRecover.parse_hex(),
+          "02571792000000000000000000000000a5f1ea7df861952863df2e8d1312f7305d" <>
+            "abf215000000000000000000000000000000000000000000000000000000000000" <>
+            "2b5b",
         "takerAssetData" =>
-          "0xf47261b00000000000000000000000007ceb23fd6bc0add59e62ac25578270cff1b9f619"
-          |> ExWeb3EcRecover.parse_hex(),
-        "takerFeeAssetData" => "0x" |> ExWeb3EcRecover.parse_hex(),
-        "makerFeeAssetData" => "0x" |> ExWeb3EcRecover.parse_hex(),
+          "0xf47261b00000000000000000000000007ceb23fd6bc0add59e62ac25578270cff1b9f619",
+        "takerFeeAssetData" => "0x",
+        "makerFeeAssetData" => "0x",
         "takerFee" => 0,
         "makerFee" => 0
       }
