@@ -11,14 +11,10 @@ defmodule ExWeb3EcRecover.RecoverSignature do
   alias ExWeb3EcRecover.SignedType
   alias ExWeb3EcRecover.SignedType.Message
 
-
-
-
   def hash_eip712(message) do
-
     domain_separator = SignedType.hash_message(message.domain, message.types, @eip712)
-    message_hash =
-    SignedType.hash_message(message.message, message.types, message.primary_type)
+    message_hash = SignedType.hash_message(message.message, message.types, message.primary_type)
+
     [
       @prefix_1901,
       domain_separator,
@@ -26,16 +22,12 @@ defmodule ExWeb3EcRecover.RecoverSignature do
     ]
     |> :erlang.iolist_to_binary()
     |> ExKeccak.hash_256()
-
-
   end
-
 
   def recover_typed_signature(message, sig, version)
 
   def recover_typed_signature(%Message{} = message, sig, version)
       when version in @allowed_versions do
-   
     hash_eip712(message)
     |> do_recover_sig(sig)
   end
