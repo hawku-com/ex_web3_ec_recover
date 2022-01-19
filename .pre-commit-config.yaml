@@ -1,0 +1,39 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v3.2.0
+      hooks:
+          - id: trailing-whitespace
+          - id: end-of-file-fixer
+          - id: check-yaml
+          - id: check-added-large-files
+    ### START BACKEND pre-commit ###
+    - repo: local
+      hooks:
+          - id: check-deps
+            name: Check mix.lock for divergences
+            always_run: false
+            pass_filenames: false
+            language: system
+            entry: "mix deps.get"
+          - id: mix-format
+            name: Ensure the code is properly formatted
+            always_run: false
+            pass_filenames: false
+            language: system
+            files: \.exs?$
+            entry: "mix format"
+          - id: mix-compile
+            name: Check whether compiler emits no warnings
+            always_run: false
+            pass_filenames: false
+            language: system
+            entry: "mix compile --force --warnings-as-errors"
+          - id: mix-credo
+            name: Checks for credo warnings
+            always_run: false
+            pass_filenames: false
+            language: system
+            entry: "mix credo --strict"
+    ### END BACKEND pre-commit ###
