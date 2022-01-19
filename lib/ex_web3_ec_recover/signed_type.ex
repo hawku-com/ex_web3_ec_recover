@@ -5,6 +5,7 @@ defmodule ExWeb3EcRecover.SignedType do
   """
 
   defmodule Encoder do
+    @moduledoc false
     @callback encode_value(value :: any(), type :: String.t()) :: binary()
   end
 
@@ -51,7 +52,7 @@ defmodule ExWeb3EcRecover.SignedType do
   @spec encode_type(map(), String.t(), types(), module()) :: binary()
   def encode_type(data, primary_type, types, encoder) do
     types[primary_type]
-    |> Enum.map(fn %{"name" => name, "type" => type} ->
+    |> Enum.map_join(fn %{"name" => name, "type" => type} ->
       value = data[name]
 
       if custom_type?(types, type) do
@@ -60,7 +61,6 @@ defmodule ExWeb3EcRecover.SignedType do
         encoder.encode_value(type, value)
       end
     end)
-    |> Enum.join()
   end
 
   def encode_types(types, primary_type) do

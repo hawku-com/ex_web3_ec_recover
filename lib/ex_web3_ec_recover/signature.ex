@@ -1,4 +1,5 @@
 defmodule ExWeb3EcRecover.Signature do
+  @moduledoc false
   @enforce_keys [:r, :s, :v_num]
   defstruct @enforce_keys
 
