@@ -1,4 +1,9 @@
 defmodule ExWeb3EcRecover.SignedType.HexStringEncoder do
+  @moduledoc """
+  This module defines an encoder that expects all binaries to be
+  to be hexstrings.
+  """
+
   @behaviour ExWeb3EcRecover.SignedType.Encoder
 
   def encode_value("string", value), do: ExKeccak.hash_256(value)
