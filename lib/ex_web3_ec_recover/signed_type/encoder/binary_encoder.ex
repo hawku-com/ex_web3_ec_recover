@@ -1,4 +1,9 @@
 defmodule ExWeb3EcRecover.SignedType.BinaryEncoder do
+  @moduledoc """
+  This module defines an encoder that expects all binaries to be
+  to be parsed Elixir binaries and not strings.
+  """
+
   @behaviour ExWeb3EcRecover.SignedType.Encoder
 
   def encode_value(type, value) when type in ["bytes", "string"], do: ExKeccak.hash_256(value)
