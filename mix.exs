@@ -10,7 +10,7 @@ defmodule ExWeb3EcRecover.MixProject do
         main: "ExWeb3EcRecover",
         extras: ["README.md"]
       ],
-      app: :ex_web3_recover,
+      app: :ex_web3_ec_recover,
       version: "0.1.0",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
