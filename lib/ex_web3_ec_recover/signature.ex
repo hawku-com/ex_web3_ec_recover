@@ -14,10 +14,12 @@ defmodule ExWeb3EcRecover.Signature do
       binary_part(sig_binary, 64, 1)
       |> :binary.decode_unsigned()
 
+    v_num = if v_num >= 27, do: v_num - 27, else: v_num
+
     %__MODULE__{
       r: r,
       s: s,
-      v_num: v_num - 27
+      v_num: v_num
     }
   end
 end
