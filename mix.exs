@@ -11,7 +11,7 @@ defmodule ExWeb3EcRecover.MixProject do
         extras: ["README.md"]
       ],
       app: :ex_web3_ec_recover,
-      version: "0.1.0",
+      version: "0.2.0",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       description: description(),
@@ -35,7 +35,7 @@ defmodule ExWeb3EcRecover.MixProject do
     [
       name: "ex_web3_ec_recover",
       files: ["lib", "mix.exs", "README*", "LICENSE*"],
-      maintainers: ["Hawku, Inc,", "Charlie Graham"],
+      maintainers: ["Hawku, Inc,", "Charlie Graham", "Hajto"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/hawku-com/ex_web3_ec_recover"}
     ]
