@@ -78,9 +78,9 @@ Hosted on [http://hexdocs.pm/exiban/ExIban.html](http://hexdocs.pm/ex_web3_ec_re
 ## Authors
 Charlie Graham & Jakub Hajto (Hawku, Inc)
 
-## Release Notes
-0.2 Support for Typed Signatures (EIP 712) and supports Metamask personal signatures
-0.1 Initial Release
+## Releases
+0.2 Support for Typed Signatures (EIP 712) and signatures using Ledger devices
+<br/> 0.1 Initial Release
 
 
 ExWeb3EcRecover is released under the [MIT License](https://github.com/appcues/exsentry/blob/master/LICENSE.txt).
