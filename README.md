@@ -73,7 +73,7 @@ iex> ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
 
 
 ## Documentation
-Hosted on [http://hexdocs.pm/exiban/ExIban.html](http://hexdocs.pm/ex_web3_ec_recover.html)
+Hosted on [https://hexdocs.pm/ex_web3_ec_recover/ExWeb3EcRecover.html](https://hexdocs.pm/ex_web3_ec_recover/ExWeb3EcRecover.html)
 
 ## Authors
 Charlie Graham & Jakub Hajto (Hawku, Inc)
