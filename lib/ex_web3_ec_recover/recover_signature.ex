@@ -26,19 +26,25 @@ defmodule ExWeb3EcRecover.RecoverSignature do
 
   def recover_typed_signature(message, sig, version)
 
-  def recover_typed_signature(%Message{} = message, sig, version)
-      when version in @allowed_versions do
+  def recover_typed_signature(%Message{} = message, "0x" <> signature = sig, version)
+      when version in @allowed_versions and byte_size(signature) == 130 do
     hash_eip712(message)
     |> do_recover_sig(sig)
   end
 
-  def recover_typed_signature(_message, _sig, _version), do: {:error, :unsupported_version}
+  def recover_typed_signature(_message, _sig, version) when version not in @allowed_versions,
+    do: {:error, :unsupported_version}
 
-  def recover_personal_signature(message, sig) do
+  def recover_typed_signature(_message, _sig, _version), do: {:error, :invalid_signature}
+
+  def recover_personal_signature(message, "0x" <> signature = sig)
+      when byte_size(signature) == 130 do
     message
     |> PersonalType.create_hash_from_personal_message()
     |> do_recover_sig(sig)
   end
+
+  def recover_personal_signature(_message, _sig), do: {:error, :invalid_signature}
 
   defp do_recover_sig(hash, sig_hexstring) do
     sig = Signature.from_hexstring(sig_hexstring)
