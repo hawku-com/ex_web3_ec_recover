@@ -11,6 +11,9 @@ defmodule ExWeb3EcRecover.RecoverSignature do
   alias ExWeb3EcRecover.SignedType
   alias ExWeb3EcRecover.SignedType.Message
 
+  defguard is_valid_signature?(signature)
+           when byte_size(signature) == 132 and binary_part(signature, 0, 2) == "0x"
+
   def hash_eip712(message) do
     domain_separator = SignedType.hash_message(message.domain, message.types, @eip712)
     message_hash = SignedType.hash_message(message.message, message.types, message.primary_type)
@@ -27,18 +30,24 @@ defmodule ExWeb3EcRecover.RecoverSignature do
   def recover_typed_signature(message, sig, version)
 
   def recover_typed_signature(%Message{} = message, sig, version)
-      when version in @allowed_versions do
+      when version in @allowed_versions and is_valid_signature?(sig) do
     hash_eip712(message)
     |> do_recover_sig(sig)
   end
 
-  def recover_typed_signature(_message, _sig, _version), do: {:error, :unsupported_version}
+  def recover_typed_signature(_message, _sig, version) when version not in @allowed_versions,
+    do: {:error, :unsupported_version}
 
-  def recover_personal_signature(message, sig) do
+  def recover_typed_signature(_message, _sig, _version), do: {:error, :invalid_signature}
+
+  def recover_personal_signature(message, sig)
+      when is_valid_signature?(sig) do
     message
     |> PersonalType.create_hash_from_personal_message()
     |> do_recover_sig(sig)
   end
+
+  def recover_personal_signature(_message, _sig), do: {:error, :invalid_signature}
 
   defp do_recover_sig(hash, sig_hexstring) do
     sig = Signature.from_hexstring(sig_hexstring)
