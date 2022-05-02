@@ -24,7 +24,7 @@ end
 
 ### Personal Sign
 ```elixir
-iex> ExWeb3EcRecover.recover_personal_signature(%{sig: "0x1dd3657c91d95f350ab25f17ee7cbcdbccd3f5bc52976bfd4dd03bd6bc29d2ac23e656bee509ca33b921e0e6b53eb64082be1bb3c69c3a4adccd993b1d667f8d1b", msg: "hello world"})
+iex> ExWeb3EcRecover.recover_personal_signature("hello world", "0x1dd3657c91d95f350ab25f17ee7cbcdbccd3f5bc52976bfd4dd03bd6bc29d2ac23e656bee509ca33b921e0e6b53eb64082be1bb3c69c3a4adccd993b1d667f8d1b")
 "0x11f4d0A3c12e86B4b5F39B213F7E19D048276DAe"
 
 ```
