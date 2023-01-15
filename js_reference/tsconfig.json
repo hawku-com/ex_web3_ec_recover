@@ -1,0 +1,10 @@
+{
+    "extends": "@tsconfig/node16/tsconfig.json",
+    "compilerOptions": {
+      "target": "es2022",
+      "module": "nodenext",
+      "esModuleInterop": true,
+    },
+    "include": ["src"],
+    "exclude": ["node_modules"]
+  }

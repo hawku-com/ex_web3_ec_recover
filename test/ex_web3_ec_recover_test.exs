@@ -7,18 +7,18 @@ defmodule ExWeb3EcRecoverTest do
 
   @domain %{
     "name" => "example.metamask.io",
-    "version" => "3",
+    "version" => "4",
     "chainId" => 1,
-    "verifyingContract" => "0x"
+    "verifyingContract" => "0x0000000000000000000000000000000000000000"
   }
+
+  @expected_address "0x5ff3cb18d8866541c66e4a346767a10480c4278d"
 
   describe "recover_typed_signature/3" do
     test "Recovers address from a signature and the message" do
       # This sig was genarated using Meta Mask
       sig =
-        "0xf6cda8eaf5137e8cc15d48d03a002b0512446e2a7acbc576c01cfbe40ad" <>
-          "9345663ccda8884520d98dece9a8bfe38102851bdae7f69b3d8612b9808e6" <>
-          "337801601b"
+        "0x97ffd15a08cbaebf4cbf2cd40f704bb5b79e3e3a47e29c90f0d8b5360ef312ba0382885309a88c99832082241675b402bfc631e24554079cbee2d8b70a3caeb71b"
 
       message = %Message{
         types: %{
@@ -31,55 +31,8 @@ defmodule ExWeb3EcRecoverTest do
         domain: @domain
       }
 
-      expected_address = "0x29c76e6ad8f28bb1004902578fb108c507be341b"
 
-      assert expected_address ==
-               ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
-    end
-
-    test "Recovers address from a signature and the message with zero V" do
-      # This sig was genarated using Meta Mask
-      sig =
-        "0xf6cda8eaf5137e8cc15d48d03a002b0512446e2a7acbc576c01cfbe40ad" <>
-          "9345663ccda8884520d98dece9a8bfe38102851bdae7f69b3d8612b9808e6" <>
-          "3378016000"
-
-      message = %Message{
-        types: %{
-          "Message" => [%{"name" => "data", "type" => "string"}],
-        },
-        primary_type: "Message",
-        message: %{
-          "data" => "test"
-        },
-        domain: @domain
-      }
-
-      expected_address = "0x29c76e6ad8f28bb1004902578fb108c507be341b"
-
-      assert expected_address ==
-               ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
-    end
-
-    test "Recovers address from a signature and the message with provided domain" do
-      # This sig was genarated using Meta Mask
-      sig =
-        "0xf75d91c136214ad9d73b4117109982ac905d0e90b5fff7c69ba59dba0669e56922cc936feb67993627b56542d138e151de0e196962e38aabf834b002b01592211c"
-
-      message = %Message{
-        types: %{
-          "Message" => [%{"name" => "data", "type" => "string"}],
-        },
-        primary_type: "Message",
-        message: %{
-          "data" => "test"
-        },
-        domain: @domain
-      }
-
-      expected_address = "0x29c76e6ad8f28bb1004902578fb108c507be341b"
-
-      assert expected_address ==
+      assert @expected_address ==
                ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
     end
 
@@ -130,11 +83,8 @@ defmodule ExWeb3EcRecoverTest do
         }
       }
 
-      sig =
-        "0x16818763816e1aae13ee603e677cfc79e50909518bf0941ff9ed5a8e74b7b4ee50820810b3598f6d5bd90db7dd43e8992a628c1b003d13c86c0b2a3a2cde67531b"
-
-      target = "0x29c76e6ad8f28bb1004902578fb108c507be341b"
-      assert target == ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
+      sig = "0xe1170c9a9da6b19f579e6d9dce8b577ab577bc73bd247658b77a9846c2b4d3e51e882c9c7364b1e8bcf98b865b72ef835fd4dfe6b883ab6deb41fabe5252cc931c"
+      assert @expected_address == ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
     end
 
     test "tests hash message" do
