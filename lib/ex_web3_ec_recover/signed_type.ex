@@ -35,6 +35,10 @@ defmodule ExWeb3EcRecover.SignedType do
     |> ExKeccak.hash_256()
   end
 
+  def encode(message, opts \\ []) do
+    encode(message.message, message.types, message.primary_type, opts)
+  end
+
   @doc """
   Encodes a message according to EIP-712
   """
@@ -42,16 +46,32 @@ defmodule ExWeb3EcRecover.SignedType do
   def encode(message, types, primary_type, opts \\ []) do
     encoder = Keyword.get(opts, :encoder, @default_encoder)
 
+    array? = is_array_type?(primary_type)
+    primary_type = String.trim_trailing(primary_type, "[]")
+
+    encoded_type =
+      if array? do
+        encode_array(message, primary_type, types, encoder)
+      else
+        encode_type(message, primary_type, types, encoder)
+      end
+
     [
       encode_types(types, primary_type),
-      encode_type(message, primary_type, types, encoder)
+      encoded_type
     ]
+    |> :erlang.iolist_to_binary()
+  end
+
+  def encode_array(data, primary_type, types, encoder) do
+    data
+    |> Enum.map_join(&encode_type(&1, primary_type, types, encoder))
     |> :erlang.iolist_to_binary()
   end
 
   @spec encode_type(map(), String.t(), types(), module()) :: binary()
   def encode_type(data, primary_type, types, encoder) do
-    types[primary_type]
+    types[String.trim_trailing(primary_type, "[]")]
     |> Enum.map_join(fn %{"name" => name, "type" => type} ->
       value = data[name]
 
@@ -80,6 +100,7 @@ defmodule ExWeb3EcRecover.SignedType do
     types[primary_types]
     |> Enum.reduce(acc, fn %{"type" => type}, acc ->
       if custom_type?(types, type) do
+        type = String.trim_trailing(type, "[]")
         acc = MapSet.put(acc, type)
         find_deps(types, type, acc, depth - 1)
       else
@@ -90,8 +111,10 @@ defmodule ExWeb3EcRecover.SignedType do
 
   defp custom_type?(types, type) do
     # TODO verify not a builtin type
-    Map.has_key?(types, type)
+    Map.has_key?(types, String.trim_trailing(type, "[]"))
   end
+
+  defp is_array_type?(type), do: String.ends_with?(type, "[]")
 
   defp format_dep(dep, types) do
     arguments =
