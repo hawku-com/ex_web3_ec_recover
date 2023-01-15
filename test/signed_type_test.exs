@@ -28,7 +28,7 @@ defmodule ExWeb3EcRecover.SignedTypeTest do
           %{"name" => "data", "type" => "string"},
           %{"name" => "data1", "type" => "int8"},
           %{"name" => "data2", "type" => "uint8"},
-          %{"name" => "data3", "type" => "bytes8"},
+          %{"name" => "data3", "type" => "bytes4"},
           %{"name" => "data4", "type" => "bool"},
           %{"name" => "data5", "type" => "address"}
         ]
@@ -42,7 +42,7 @@ defmodule ExWeb3EcRecover.SignedTypeTest do
         "data2" => 3,
         "data3" => "c3f426ae",
         "data4" => false,
-        "data5" => "5FF3cb18d8866541C66e4A346767a10480c4278D"
+        "data5" => "0x5FF3cb18d8866541C66e4A346767a10480c4278D"
       }
 
       # This was generated with metamask
