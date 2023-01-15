@@ -23,21 +23,8 @@ defmodule ExWeb3EcRecover.RecoverSignature do
            when byte_size(signature) == 132 and binary_part(signature, 0, 2) == "0x"
 
   def encode_eip712(message) do
-    domain_separator =
-      SignedType.hash_message(message.domain, @domain_type, @eip712)
-      |> tap(fn encoded ->
-        encoded
-        |> Base.encode16()
-        |> IO.inspect(label: "Encoded domain")
-      end)
-
-    message_hash =
-      SignedType.hash_message(message.message, message.types, message.primary_type)
-      |> tap(fn encoded ->
-        encoded
-        |> Base.encode16()
-        |> IO.inspect(label: "Message hash")
-      end)
+    domain_separator = SignedType.hash_message(message.domain, @domain_type, @eip712)
+    message_hash = SignedType.hash_message(message.message, message.types, message.primary_type)
 
     [
       @prefix_1901,

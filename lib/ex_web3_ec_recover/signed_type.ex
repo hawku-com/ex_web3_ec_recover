@@ -33,6 +33,7 @@ defmodule ExWeb3EcRecover.SignedType do
   def hash_message(message, types, primary_type, opts \\ []) do
     # TODO: Remove
     encode(message, types, primary_type, opts)
+    |> ExKeccak.hash_256()
   end
 
   def encode(message, opts \\ []) do
@@ -49,30 +50,21 @@ defmodule ExWeb3EcRecover.SignedType do
     array? = is_array_type?(primary_type)
     primary_type = String.trim_trailing(primary_type, "[]")
 
-    encoded_type =
-      if array? do
-        encode_array(message, primary_type, types, encoder)
-      else
+    if array? do
+      encode_array(message, primary_type, types, opts)
+    else
+      [
+        encode_types(types, primary_type),
         encode_type(message, primary_type, types, encoder)
-      end
-
-    [
-      encode_types(types, primary_type),
-      encoded_type
-    ]
-    |> :erlang.iolist_to_binary()
-    |> ExKeccak.hash_256()
-    |> tap(fn encoded ->
-      encoded
-      |> Base.encode16()
-      |> IO.inspect(label: " hashed in encoding")
-    end)
+      ]
+      |> :erlang.iolist_to_binary()
+    end
   end
 
-  def encode_array(data, primary_type, types, encoder) do
-    data
-    |> Enum.map_join(&encode_type(&1, primary_type, types, encoder))
-    |> :erlang.iolist_to_binary()
+  def encode_array(data, primary_type, types, opts) do
+    Enum.map_join(data, fn single_struct ->
+      hash_message(single_struct, types, primary_type, opts)
+    end)
   end
 
   @spec encode_type(map(), String.t(), types(), module()) :: binary()
