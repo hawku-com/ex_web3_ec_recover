@@ -47,10 +47,12 @@ defmodule ExWeb3EcRecover.SignedTypeTest do
 
       # This was generated with metamask
       target =
-        ("77cf5d045714d6093f70690f1206690fca190fba3e645ede4725917151b7aaee")
+        "77cf5d045714d6093f70690f1206690fca190fba3e645ede4725917151b7aaee"
         |> String.downcase()
 
-      assert target == SignedType.hash_message(message, types, primary_type) |> Base.encode16(case: :lower)
+      assert target ==
+               SignedType.hash_message(message, types, primary_type)
+               |> Base.encode16(case: :lower)
     end
 
     test "containing references" do

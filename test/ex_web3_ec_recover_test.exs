@@ -31,7 +31,6 @@ defmodule ExWeb3EcRecoverTest do
         domain: @domain
       }
 
-
       assert @expected_address ==
                ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
     end
@@ -83,7 +82,9 @@ defmodule ExWeb3EcRecoverTest do
         }
       }
 
-      sig = "0xe1170c9a9da6b19f579e6d9dce8b577ab577bc73bd247658b77a9846c2b4d3e51e882c9c7364b1e8bcf98b865b72ef835fd4dfe6b883ab6deb41fabe5252cc931c"
+      sig =
+        "0xe1170c9a9da6b19f579e6d9dce8b577ab577bc73bd247658b77a9846c2b4d3e51e882c9c7364b1e8bcf98b865b72ef835fd4dfe6b883ab6deb41fabe5252cc931c"
+
       assert @expected_address == ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
     end
 
@@ -155,7 +156,7 @@ defmodule ExWeb3EcRecoverTest do
 
       message = %Message{
         types: %{
-          "Message" => [%{"name" => "data", "type" => "string"}],
+          "Message" => [%{"name" => "data", "type" => "string"}]
         },
         primary_type: "Message",
         message: %{
