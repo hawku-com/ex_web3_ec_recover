@@ -48,7 +48,8 @@ defmodule ExWeb3EcRecover.MixProject do
       {:ex_keccak, "~> 0.3"},
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
       {:ex_abi, "~> 0.5"},
-      {:credo, "~> 1.6.1", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.6.1", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 end
