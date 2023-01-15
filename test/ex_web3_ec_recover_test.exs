@@ -5,6 +5,13 @@ defmodule ExWeb3EcRecoverTest do
 
   alias ExWeb3EcRecover.SignedType.Message
 
+  @domain %{
+    "name" => "example.metamask.io",
+    "version" => "3",
+    "chainId" => 1,
+    "verifyingContract" => "0x"
+  }
+
   describe "recover_typed_signature/3" do
     test "Recovers address from a signature and the message" do
       # This sig was genarated using Meta Mask
@@ -15,14 +22,13 @@ defmodule ExWeb3EcRecoverTest do
 
       message = %Message{
         types: %{
-          "Message" => [%{"name" => "data", "type" => "string"}],
-          "EIP712Domain" => []
+          "Message" => [%{"name" => "data", "type" => "string"}]
         },
         primary_type: "Message",
         message: %{
           "data" => "test"
         },
-        domain: %{}
+        domain: @domain
       }
 
       expected_address = "0x29c76e6ad8f28bb1004902578fb108c507be341b"
@@ -41,13 +47,12 @@ defmodule ExWeb3EcRecoverTest do
       message = %Message{
         types: %{
           "Message" => [%{"name" => "data", "type" => "string"}],
-          "EIP712Domain" => []
         },
         primary_type: "Message",
         message: %{
           "data" => "test"
         },
-        domain: %{}
+        domain: @domain
       }
 
       expected_address = "0x29c76e6ad8f28bb1004902578fb108c507be341b"
@@ -64,35 +69,12 @@ defmodule ExWeb3EcRecoverTest do
       message = %Message{
         types: %{
           "Message" => [%{"name" => "data", "type" => "string"}],
-          "EIP712Domain" => [
-            %{
-              "name" => "name",
-              "type" => "string"
-            },
-            %{
-              "name" => "version",
-              "type" => "string"
-            },
-            %{
-              "name" => "chainId",
-              "type" => "uint256"
-            },
-            %{
-              "name" => "verifyingContract",
-              "type" => "address"
-            }
-          ]
         },
         primary_type: "Message",
         message: %{
           "data" => "test"
         },
-        domain: %{
-          "name" => "example.metamask.io",
-          "version" => "3",
-          "chainId" => 1,
-          "verifyingContract" => "0x"
-        }
+        domain: @domain
       }
 
       expected_address = "0x29c76e6ad8f28bb1004902578fb108c507be341b"
@@ -104,12 +86,6 @@ defmodule ExWeb3EcRecoverTest do
     test "Order message support" do
       message = %Message{
         types: %{
-          "EIP712Domain" => [
-            %{"name" => "name", "type" => "string"},
-            %{"name" => "version", "type" => "string"},
-            %{"name" => "chainId", "type" => "uint256"},
-            %{"name" => "verifyingContract", "type" => "address"}
-          ],
           "Order" => [
             %{"name" => "makerAddress", "type" => "address"},
             %{"name" => "takerAddress", "type" => "address"},
@@ -166,12 +142,6 @@ defmodule ExWeb3EcRecoverTest do
 
       msg = %Message{
         types: %{
-          "EIP712Domain" => [
-            %{"name" => "name", "type" => "string"},
-            %{"name" => "version", "type" => "string"},
-            %{"name" => "chainId", "type" => "uint256"},
-            %{"name" => "verifyingContract", "type" => "address"}
-          ],
           "Order" => [
             %{"name" => "makerAddress", "type" => "address"},
             %{"name" => "takerAddress", "type" => "address"},
@@ -236,7 +206,6 @@ defmodule ExWeb3EcRecoverTest do
       message = %Message{
         types: %{
           "Message" => [%{"name" => "data", "type" => "string"}],
-          "EIP712Domain" => []
         },
         primary_type: "Message",
         message: %{
