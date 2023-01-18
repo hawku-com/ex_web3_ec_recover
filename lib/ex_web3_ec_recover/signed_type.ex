@@ -31,7 +31,6 @@ defmodule ExWeb3EcRecover.SignedType do
   """
   @spec hash_message(map(), types(), String.t(), Keyword.t()) :: hash :: binary()
   def hash_message(message, types, primary_type, opts \\ []) do
-    # TODO: Remove
     encode(message, types, primary_type, opts)
     |> ExKeccak.hash_256()
   end
