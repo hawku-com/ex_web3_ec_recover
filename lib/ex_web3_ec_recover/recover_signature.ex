@@ -3,8 +3,16 @@ defmodule ExWeb3EcRecover.RecoverSignature do
 
   @prefix_1901 Base.decode16!("1901")
   @eip712 "EIP712Domain"
+  @domain_type %{
+    "EIP712Domain" => [
+      %{"name" => "name", "type" => "string"},
+      %{"name" => "version", "type" => "string"},
+      %{"name" => "chainId", "type" => "uint256"},
+      %{"name" => "verifyingContract", "type" => "address"}
+    ]
+  }
 
-  @allowed_versions [:v3, :v4]
+  @allowed_versions [:v4]
 
   alias ExWeb3EcRecover.PersonalType
   alias ExWeb3EcRecover.Signature
@@ -14,8 +22,8 @@ defmodule ExWeb3EcRecover.RecoverSignature do
   defguard is_valid_signature?(signature)
            when byte_size(signature) == 132 and binary_part(signature, 0, 2) == "0x"
 
-  def hash_eip712(message) do
-    domain_separator = SignedType.hash_message(message.domain, message.types, @eip712)
+  def encode_eip712(message) do
+    domain_separator = SignedType.hash_message(message.domain, @domain_type, @eip712)
     message_hash = SignedType.hash_message(message.message, message.types, message.primary_type)
 
     [
@@ -24,6 +32,11 @@ defmodule ExWeb3EcRecover.RecoverSignature do
       message_hash
     ]
     |> :erlang.iolist_to_binary()
+  end
+
+  def hash_eip712(message) do
+    message
+    |> encode_eip712()
     |> ExKeccak.hash_256()
   end
 
