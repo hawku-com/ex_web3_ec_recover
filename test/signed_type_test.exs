@@ -55,6 +55,37 @@ defmodule ExWeb3EcRecover.SignedTypeTest do
                |> Base.encode16(case: :lower)
     end
 
+    test "with integers as strings or numbers" do
+      types = %{
+        "Message" => [
+          %{"name" => "data1", "type" => "int256"},
+          %{"name" => "data2", "type" => "uint256"},
+        ]
+      }
+
+      primary_type = "Message"
+
+      message_as_strings = %{
+        "data1" => "1709",
+        "data2" => "2023"
+      }
+
+      message_as_numbers = %{
+        "data1" => 1709,
+        "data2" => 2023
+      }
+
+      # This was generated with metamask
+      target =
+        "e52790096313e8f1f8c819063bbc1dd12e680e58d2d8b725cb474c0e7c0cbb70"
+        |> String.downcase()
+
+      strings_signed = SignedType.hash_message(message_as_strings, types, primary_type)
+      numbers_signed = SignedType.hash_message(message_as_numbers, types, primary_type)
+      assert strings_signed == numbers_signed
+      assert Base.encode16(strings_signed, case: :lower) == target
+    end
+
     test "containing references" do
       types = %{
         "Message" => [
