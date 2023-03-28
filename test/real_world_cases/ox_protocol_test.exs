@@ -40,7 +40,7 @@ defmodule ExWeb3EcRecover.RealWorldCases.OxProtocolTest do
       domain: %{
         "name" => "0x Protocol",
         "version" => "3.0.0",
-        "chainId" => 137,
+        "chainId" => "137",
         "verifyingContract" => "0xfede379e48c873c75f3cc0c81f7c784ad730a8f7"
       },
       message: %{
@@ -48,10 +48,10 @@ defmodule ExWeb3EcRecover.RealWorldCases.OxProtocolTest do
         "takerAddress" => "0x0000000000000000000000000000000000000000",
         "senderAddress" => "0x0000000000000000000000000000000000000000",
         "feeRecipientAddress" => "0x0000000000000000000000000000000000000000",
-        "expirationTimeSeconds" => 1_641_635_545,
-        "salt" => 1,
-        "makerAssetAmount" => 1,
-        "takerAssetAmount" => 50_000_000_000_000_000,
+        "expirationTimeSeconds" => "1641635545",
+        "salt" => "1",
+        "makerAssetAmount" => "1",
+        "takerAssetAmount" => "50000000000000000",
         "makerAssetData" =>
           "02571792000000000000000000000000a5f1ea7df861952863df2e8d1312f7305d" <>
             "abf215000000000000000000000000000000000000000000000000000000000000" <>
@@ -60,8 +60,8 @@ defmodule ExWeb3EcRecover.RealWorldCases.OxProtocolTest do
           "0xf47261b00000000000000000000000007ceb23fd6bc0add59e62ac25578270cff1b9f619",
         "takerFeeAssetData" => "0x",
         "makerFeeAssetData" => "0x",
-        "takerFee" => 0,
-        "makerFee" => 0
+        "takerFee" => "0",
+        "makerFee" => "0"
       }
     }
 

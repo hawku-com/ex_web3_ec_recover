@@ -20,6 +20,12 @@ defmodule ExWeb3EcRecover.SignedType.HexStringEncoder do
   def encode_value("uint" <> bytes_length, value) when is_number(value),
     do: encode_value_atomic("uint", bytes_length, value)
 
+  def encode_value("int" <> bytes_length, value) when is_binary(value),
+    do: encode_value_atomic("int", bytes_length, String.to_integer(value))
+
+  def encode_value("uint" <> bytes_length, value) when is_binary(value),
+    do: encode_value_atomic("uint", bytes_length, String.to_integer(value))
+
   def encode_value("bytes" <> bytes_length, value) do
     value = ExWeb3EcRecover.parse_hex(value)
     encode_value_atomic("bytes", bytes_length, value)
