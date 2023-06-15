@@ -59,7 +59,7 @@ defmodule ExWeb3EcRecover.SignedTypeTest do
       types = %{
         "Message" => [
           %{"name" => "data1", "type" => "int256"},
-          %{"name" => "data2", "type" => "uint256"},
+          %{"name" => "data2", "type" => "uint256"}
         ]
       }
 
