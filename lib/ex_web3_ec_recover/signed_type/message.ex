@@ -49,7 +49,7 @@ defmodule ExWeb3EcRecover.SignedType.Message do
   defstruct @enforce_keys
 
   @type t :: %__MODULE__{
-          domain: map(),
+          domain: map() | binary(),
           message: map(),
           types: map(),
           primary_type: String.t()

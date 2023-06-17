@@ -4,10 +4,10 @@ defmodule ExWeb3EcRecover.Signature do
   defstruct @enforce_keys
 
   @type t :: %__MODULE__{
-    r: binary(),
-    s: binary(),
-    v_num: 0 | 1
-  }
+          r: binary(),
+          s: binary(),
+          v_num: 0 | 1
+        }
 
   def from_hexstring("0x" <> signature) when byte_size(signature) == 130 do
     # 65 bytes of data, each byte takes two bytes in hexstring
