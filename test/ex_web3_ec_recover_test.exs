@@ -35,6 +35,26 @@ defmodule ExWeb3EcRecoverTest do
                ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
     end
 
+    test "Recovers address from a signature and the message with precalculated domain" do
+      # This sig was genarated using Meta Mask
+      sig =
+        "0x97ffd15a08cbaebf4cbf2cd40f704bb5b79e3e3a47e29c90f0d8b5360ef312ba0382885309a88c99832082241675b402bfc631e24554079cbee2d8b70a3caeb71b"
+
+      message = %Message{
+        types: %{
+          "Message" => [%{"name" => "data", "type" => "string"}]
+        },
+        primary_type: "Message",
+        message: %{
+          "data" => "test"
+        },
+        domain: "0x60b65550349ac7d938f53ce6675638066d55afa9f7dd6db452a10139fca6d0a2"
+      }
+
+      assert @expected_address ==
+               ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
+    end
+
     test "Order message support" do
       message = %Message{
         types: %{
