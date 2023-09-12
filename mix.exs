@@ -44,12 +44,12 @@ defmodule ExWeb3EcRecover.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_secp256k1, "~> 0.3"},
-      {:ex_keccak, "~> 0.3"},
+      {:ex_secp256k1, "~> 0.7"},
+      {:ex_keccak, "~> 0.7"},
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
-      {:ex_abi, "~> 0.5"},
-      {:credo, "~> 1.6.1", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
+      {:ex_abi, "~> 0.6"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end
 end
