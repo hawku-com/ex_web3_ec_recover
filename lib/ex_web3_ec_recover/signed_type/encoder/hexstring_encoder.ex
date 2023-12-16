@@ -32,17 +32,17 @@ defmodule ExWeb3EcRecover.SignedType.HexStringEncoder do
   end
 
   def encode_value("bool", value),
-    do: ABI.TypeEncoder.encode_raw([value], [:bool])
+    do: ABI.TypeEncoder.encode_raw([value], [:bool], :standard)
 
   def encode_value("address", value) do
     value = ExWeb3EcRecover.parse_hex(value)
-    ABI.TypeEncoder.encode_raw([value], [:address])
+    ABI.TypeEncoder.encode_raw([value], [:address], :standard)
   end
 
   def encode_value_atomic(type, bytes_length, value) do
     case Integer.parse(bytes_length) do
       {number, ""} ->
-        ABI.TypeEncoder.encode_raw([value], [{String.to_existing_atom(type), number}])
+        ABI.TypeEncoder.encode_raw([value], [{String.to_existing_atom(type), number}], :standard)
 
       :error ->
         raise "Malformed type `#{type}` in types, with value #{value}"

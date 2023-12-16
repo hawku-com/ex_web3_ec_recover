@@ -18,10 +18,10 @@ defmodule ExWeb3EcRecover.SignedType.BinaryEncoder do
     do: encode_value_atomic("bytes", bytes_length, value)
 
   def encode_value("bool", value),
-    do: ABI.TypeEncoder.encode_raw([value], [:bool])
+    do: ABI.TypeEncoder.encode_raw([value], [:bool], :standard)
 
   def encode_value("address", value),
-    do: ABI.TypeEncoder.encode_raw([value], [:address])
+    do: ABI.TypeEncoder.encode_raw([value], [:address], :standard)
 
   def encode_value_atomic(type, bytes_length, value) do
     case Integer.parse(bytes_length) do
