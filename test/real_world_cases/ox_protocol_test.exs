@@ -8,6 +8,7 @@ defmodule ExWeb3EcRecover.RealWorldCases.OxProtocolTest do
   use ExUnit.Case, async: true
 
   alias ExWeb3EcRecover.SignedType.Message
+  alias EthereumSignatures, as: ExWeb3EcRecover
 
   # https://github.com/0xProject/0x-protocol-specification/blob/master/v3/v3-specification.md#order-message-format
   test "Order message support" do

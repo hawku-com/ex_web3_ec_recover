@@ -10,7 +10,7 @@ defmodule ExWeb3EcRecover.SignedType.HexStringEncoder do
 
   def encode_value("bytes", value) do
     value
-    |> ExWeb3EcRecover.parse_hex()
+    |> EthereumSignatures.parse_hex()
     |> ExKeccak.hash_256()
   end
 
@@ -27,7 +27,7 @@ defmodule ExWeb3EcRecover.SignedType.HexStringEncoder do
     do: encode_value_atomic("uint", bytes_length, String.to_integer(value))
 
   def encode_value("bytes" <> bytes_length, value) do
-    value = ExWeb3EcRecover.parse_hex(value)
+    value = EthereumSignatures.parse_hex(value)
     encode_value_atomic("bytes", bytes_length, value)
   end
 
@@ -35,7 +35,7 @@ defmodule ExWeb3EcRecover.SignedType.HexStringEncoder do
     do: ABI.TypeEncoder.encode_raw([value], [:bool], :standard)
 
   def encode_value("address", value) do
-    value = ExWeb3EcRecover.parse_hex(value)
+    value = EthereumSignatures.parse_hex(value)
     ABI.TypeEncoder.encode_raw([value], [:address], :standard)
   end
 

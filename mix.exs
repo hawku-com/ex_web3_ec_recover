@@ -1,17 +1,17 @@
-defmodule ExWeb3EcRecover.MixProject do
+defmodule EthereumSignatures.MixProject do
   use Mix.Project
 
   def project do
     [
-      name: "ex_web3_ec_recover",
-      source_url: "https://github.com/hawku-com/ex_web3_ec_recover",
+      name: "ethereum_signatures",
+      source_url: "https://github.com/DennisDv24/ethereum_signatures",
       docs: [
         # The main page in the docs
-        main: "ExWeb3EcRecover",
+        main: "EthereumSignatures",
         extras: ["README.md"]
       ],
-      app: :ex_web3_ec_recover,
-      version: "0.6.0",
+      app: :ethereum_signatures,
+      version: "0.6.1",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       description: description(),
@@ -33,11 +33,11 @@ defmodule ExWeb3EcRecover.MixProject do
 
   defp package() do
     [
-      name: "ex_web3_ec_recover",
+      name: "ethereum_signatures",
       files: ["lib", "mix.exs", "README*", "LICENSE*"],
-      maintainers: ["Hawku, Inc,", "Charlie Graham", "Hajto"],
+      maintainers: ["DennisDv24"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/hawku-com/ex_web3_ec_recover"}
+      links: %{"GitHub" => "https://github.com/DennisDv24/ethereum_signatures"}
     ]
   end
 

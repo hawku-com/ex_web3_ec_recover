@@ -26,7 +26,7 @@ defmodule ExWeb3EcRecover.SignedType.BinaryEncoder do
   def encode_value_atomic(type, bytes_length, value) do
     case Integer.parse(bytes_length) do
       {number, ""} ->
-        ABI.TypeEncoder.encode_raw([value], [{String.to_existing_atom(type), number}])
+        ABI.TypeEncoder.encode_raw([value], [{String.to_existing_atom(type), number}], :standard)
 
       :error ->
         raise "Malformed type `#{type}` in types, with value #{value}"

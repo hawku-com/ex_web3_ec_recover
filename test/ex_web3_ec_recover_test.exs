@@ -1,9 +1,11 @@
 defmodule ExWeb3EcRecoverTest do
   use ExUnit.Case
 
-  doctest ExWeb3EcRecover
 
   alias ExWeb3EcRecover.SignedType.Message
+  # alias EthereumSignatures, as: ExWeb3EcRecover
+  # doctest ExWeb3EcRecover
+  doctest EthereumSignatures
 
   @domain %{
     "name" => "example.metamask.io",
@@ -32,7 +34,7 @@ defmodule ExWeb3EcRecoverTest do
       }
 
       assert @expected_address ==
-               ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
+               EthereumSignatures.recover_typed_signature(message, sig, :v4)
     end
 
     test "Recovers address from a signature and the message with precalculated domain" do
@@ -52,7 +54,7 @@ defmodule ExWeb3EcRecoverTest do
       }
 
       assert @expected_address ==
-               ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
+               EthereumSignatures.recover_typed_signature(message, sig, :v4)
     end
 
     test "Order message support" do
@@ -105,7 +107,7 @@ defmodule ExWeb3EcRecoverTest do
       sig =
         "0xe1170c9a9da6b19f579e6d9dce8b577ab577bc73bd247658b77a9846c2b4d3e51e882c9c7364b1e8bcf98b865b72ef835fd4dfe6b883ab6deb41fabe5252cc931c"
 
-      assert @expected_address == ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
+      assert @expected_address == EthereumSignatures.recover_typed_signature(message, sig, :v4)
     end
 
     test "tests hash message" do
@@ -186,7 +188,7 @@ defmodule ExWeb3EcRecoverTest do
       }
 
       assert {:error, :unsupported_version} ==
-               ExWeb3EcRecover.recover_typed_signature(message, sig, :v5)
+               EthereumSignatures.recover_typed_signature(message, sig, :v5)
     end
 
     test "Return {:error, :invalid_signature} when signature is invalid" do
@@ -205,7 +207,7 @@ defmodule ExWeb3EcRecoverTest do
       }
 
       assert {:error, :invalid_signature} ==
-               ExWeb3EcRecover.recover_typed_signature(message, sig, :v4)
+               EthereumSignatures.recover_typed_signature(message, sig, :v4)
     end
   end
 
@@ -219,7 +221,7 @@ defmodule ExWeb3EcRecoverTest do
 
       expected_address = "0x2ff0416047e1a6c06dd2eb0195c984c787adf735"
 
-      assert expected_address == ExWeb3EcRecover.recover_personal_signature(message, signature)
+      assert expected_address == EthereumSignatures.recover_personal_signature(message, signature)
     end
 
     test "Return {:error, :invalid_signature} when signature is invalid" do
@@ -228,7 +230,9 @@ defmodule ExWeb3EcRecoverTest do
       message = "some message"
 
       assert {:error, :invalid_signature} ==
-               ExWeb3EcRecover.recover_personal_signature(message, signature)
+               EthereumSignatures.recover_personal_signature(message, signature)
     end
   end
+
+
 end
